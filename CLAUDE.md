@@ -246,19 +246,20 @@ If the script was successfully used, append as comments how, and what the outcom
 ## Project Context
 
 ### What we're building:
-A personal DAT (Dental Admission Test) study assistant for Jana. It started as a minimal AI chat harness for her Computationally Assisted Metacognition class. It is a static TypeScript page on GitHub Pages that talks to models through the OpenRouter API directly from the browser. Each user brings their own key, entered at runtime and never committed. Live at https://jam903.github.io/my-ai-harness/.
+A general-purpose AI study assistant. Users type any subject and optional topic, then study in **Learn** mode (structured explanations) or **Quiz** mode (multiple-choice questions with every choice explained). A plain **Chat** tab is also available. It started as a minimal AI chat harness for Jana's Computationally Assisted Metacognition class. It is a static TypeScript page on GitHub Pages that talks to models through the OpenRouter API directly from the browser. Each user brings their own key, entered at runtime and never committed. Live at https://jam903.github.io/my-ai-harness/.
 
 ### Current focus:
-Learn and Quiz modes have shipped for Biology, General Chemistry, and Organic Chemistry. The plain chat is kept as a third tab. Next: the study tracker and adaptive learning (ADR-0007, whose questions are deferred). Open item: confirm the outline topic headings in `src/dat/topics.ts` (ADR-0004 follow-up).
+Learn and Quiz work for any user-entered subject and topic (ADR-0008). Next: the study tracker and adaptive learning (ADR-0007, whose questions are deferred). ADRs 0004–0007 are kept as written; they record an earlier exam-specific design and are superseded in part by ADR-0008.
 
 ### Key decisions made:
 - Stack, deploy, gate (Vite + GitHub Actions → Pages; `npm run check`) — see `docs/adr/0001-stack-build-and-deployment-to-github-pages.md`
 - API key in localStorage with Forget key; model output rendered as **sanitized** HTML only (amended by ADR-0004) — see `docs/adr/0002-openrouter-api-key-handling-in-the-browser.md`
 - Model picker, default `openrouter/auto` — see `docs/adr/0003-chat-interface-scope-and-model-selection.md`
-- Subject dropdown + Learn | Quiz | Chat tabs; outline topic + optional focus; Markdown via marked + DOMPurify — see `docs/adr/0004-dat-study-assistant-scope-navigation-and-topics.md`
-- Learn mode: five fixed sections (Big idea → Step by step → Example → Common DAT trap → Check yourself) — see `docs/adr/0005-learn-mode-explanation-design.md`
+- Learn | Quiz | Chat tabs; Markdown via marked + DOMPurify — see ADR-0004 (superseded in part by ADR-0008)
+- Learn mode: five fixed sections (Big idea → Step by step → Example → Common mistake → Check yourself) — see `docs/adr/0005-learn-mode-explanation-design.md`
 - Quiz mode: structured JSON with the solution before the answer, 5 clickable choices, every choice explained after every answer — see `docs/adr/0006-quiz-mode-question-format-and-feedback.md`
-- Tracker and adaptivity deferred; quiz answers are already logged to localStorage as `dat-quiz-results` — see `docs/adr/0007-study-tracker-and-adaptive-learning.md`
+- Free-text subject and topic with your previous entries suggested; code in `src/study/` — see `docs/adr/0008-general-purpose-study-assistant.md`
+- Tracker and adaptivity deferred; quiz answers are already logged to localStorage as `quiz-results` — see `docs/adr/0007-study-tracker-and-adaptive-learning.md`
 
 ### Commands:
 ```bash
