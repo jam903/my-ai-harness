@@ -4,6 +4,14 @@
 # Temporary files
 ~*
 
+# Node / Vite
+node_modules/
+dist/
+
+# Local env files — never commit secrets (ADR-0002: the API key is entered in the browser, not here)
+.env
+.env.*
+
 # Python temporary files
 __pycache__/
 *.py[cod]
