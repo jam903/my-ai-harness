@@ -9,7 +9,7 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 # OpenRouter API key handling in the browser
 
 - **Date**: 2026-11-19
-- **Iteration**: 2
+- **Iteration**: 3
 - **Status**: Accepted
 - **Deciders**: Jana Mourad, Claude (Opus 5.5)
 
@@ -75,6 +75,8 @@ A — remember (localStorage), with a Forget key button. (Chosen via Claude Code
 
 Fixed regardless of the answer: the key is entered at runtime, it is never in source, build, or git, it is sent only to openrouter.ai, and model output is rendered as text, not HTML.
 
+**Amended (Iteration 3, by [ADR-0004](0004-dat-study-assistant-scope-navigation-and-topics.md) QST-FORMATTING B):** the rendering rule is now **"model output is rendered as sanitized HTML only."** Markdown is converted with `marked` and then passed through `DOMPurify` before insertion. Raw model text never reaches `innerHTML`. User-typed text is still inserted as plain text. A regression test asserts that `<script>`, event-handler attributes, and `javascript:` links are stripped.
+
 ---
 
 ## Action Items
@@ -97,6 +99,12 @@ Fixed regardless of the answer: the key is entered at runtime, it is never in so
 - Contributors: Jana Mourad, Claude Opus 5.5
 - Changes: QST-KEY-STORAGE → A; Decision filled
 - Outcome: `Draft → Accepted`
+
+### Iteration 3 (2026-11-19)
+- Trigger: ADR-0004 QST-FORMATTING answered B (sanitized Markdown)
+- Contributors: Jana Mourad, Claude Opus 5.5
+- Changes: rendering rule amended from "text only" to "sanitized HTML only"; the original rule is kept above as history
+- Outcome: Accepted (unchanged)
 
 ---
 

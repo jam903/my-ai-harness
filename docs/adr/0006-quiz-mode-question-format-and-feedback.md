@@ -9,11 +9,11 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 # Quiz mode: question format and feedback
 
 - **Date**: 2026-11-19
-- **Iteration**: 1
-- **Status**: Draft
+- **Iteration**: 2
+- **Status**: Accepted
 - **Deciders**: Jana Mourad, Claude (Opus 5.5)
 
-**TL;DR**: Quiz mode serves one DAT-style multiple-choice question at a time for the chosen subject and topic. How questions are generated and graded, and how much explanation follows each answer, are pending Jana's answers.
+**TL;DR**: Each question is generated as a structured reply, with the model's worked solution written before the answer letter, then shown as five clickable choices and graded instantly. After every answer, all choices are explained.
 
 ---
 
@@ -49,7 +49,7 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 ## Questions
 
 ### QST-QUIZ-FORMAT: How does a quiz question get from the model to your screen, and how is it graded?
-- Status: unanswered
+- Status: answered
 - Why asking: This decides whether answer choices are clickable buttons that the app grades instantly, or a typed chat exchange. It also decides how much effort goes into catching wrong answer keys (Explicitation 1).
 - Need: pick a letter (or override — any shape answers)
 
@@ -63,12 +63,12 @@ Options:
 **A — structured, solve first.** *Rationale*: Clickable choices and instant grading match "simple, easy to navigate." Asking for the worked solution before the answer letter is the cheapest known way to reduce wrong keys, because it makes the model reason before it commits. B doubles the wait on *every* question to guard against an occasional error. Moving from A to B later is an addition, not a rewrite. A **Flag this question** button would let you mark a suspected bad key. *Confidence*: 0.75 — because the risk is real but rare with capable models, and the upgrade path is cheap. *If wrong*: if you catch wrong answer keys more than occasionally, flip to B.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+A — structured, solve first. (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ### QST-QUIZ-FEEDBACK: What should you see after you pick an answer?
-- Status: unanswered
+- Status: answered
 - Why asking: Your request said "explains incorrect answers." That could mean explaining every wrong *option*, or explaining *when you get it wrong*. Each reading produces a different screen.
 - Need: pick a letter (or override — any shape answers)
 
@@ -82,13 +82,22 @@ Options:
 **B — focus on misses.** *Rationale*: A miss gets full attention on the specific misconception you just showed, which is where learning happens. A correct answer still gets one line of why, which guards against lucky guesses. Every distractor explanation is one click away, so nothing from A is lost. *Confidence*: 0.65 — because many DAT prep guides advise reviewing every distractor, which favors A. *If wrong*: if you find yourself clicking "Show all" every time, flip to A.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+A — explain everything, always (recommendation was B; Jana chose A). (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ## Decision
 
-*Pending QST-QUIZ-FORMAT and QST-QUIZ-FEEDBACK.*
+### Chosen: structured, solve first (QST-QUIZ-FORMAT A); explain everything, always (QST-QUIZ-FEEDBACK A)
+
+**Rationale**: On format, Jana accepted the recommendation. On feedback, **she overrode it**: the recommendation was B (focus on misses), and she chose A, a full explanation of every option after every answer. That matches the common DAT-prep advice to review every distractor, which the recommendation's Confidence clause had named as the case for A.
+
+**Trade-offs accepted**: Wrong answer keys are reduced but not eliminated, because there is no second verification call. Every answer produces a longer feedback block.
+
+### Consequences
+- The model returns JSON: `{question, choices[5], solution, answer, explanations[5]}`, with `solution` before `answer`. The app validates the structure and retries once if the reply can't be parsed.
+- After each answer, the screen shows a ✓ or ✗ verdict, the worked solution, and every choice with its explanation. The correct choice and your pick are both highlighted.
+- A session score is shown. Each answered question is saved as `{subject, topic, correct, timestamp}` for ADR-0007.
 
 ---
 
@@ -112,6 +121,12 @@ Options:
 - Contributors: Jana Mourad, Claude Opus 5.5
 - Changes: framed the format and feedback questions
 - Outcome: Draft
+
+### Iteration 2 (2026-11-19)
+- Trigger: Jana's answers via the Claude Code question dialog
+- Contributors: Jana Mourad, Claude Opus 5.5
+- Changes: QST-QUIZ-FORMAT → A; QST-QUIZ-FEEDBACK → A (overriding the B recommendation); Decision filled
+- Outcome: `Draft → Accepted`
 
 ---
 

@@ -9,11 +9,11 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 # DAT study assistant: scope, navigation, and topics
 
 - **Date**: 2026-11-19
-- **Iteration**: 1
-- **Status**: Draft
+- **Iteration**: 2
+- **Status**: Accepted
 - **Deciders**: Jana Mourad, Claude (Opus 5.5)
 
-**TL;DR**: Turn the generic chat into a DAT study assistant organized by Subject (Biology, General Chemistry, Organic Chemistry) and Mode (Learn, Quiz first; tracker and adaptivity later, see ADR-0007). Navigation, topic granularity, and text formatting are pending Jana's answers.
+**TL;DR**: Subject dropdown and three tabs (Learn | Quiz | Chat). Topics come from a DAT outline list plus an optional free-text focus. Model replies render as Markdown, sanitized by DOMPurify. The tracker and adaptivity come later (ADR-0007).
 
 ---
 
@@ -61,7 +61,7 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 ## Questions
 
 ### QST-NAV: How do you switch subject and mode, and does the original free chat stay?
-- Status: unanswered
+- Status: answered
 - Why asking: This is the whole layout of the app. You asked for "simple, clean, and easy to navigate," and you'll switch often, for example from a missed quiz question straight into Learn mode on that topic. The harness was originally built for your metacognition class, so it matters whether you still need the plain, unrestricted chat.
 - Need: pick a letter (or override — any shape answers)
 
@@ -75,12 +75,12 @@ Options:
 **B — three tabs.** *Rationale*: The plain chat already works and is the tool the harness was originally built for (ADR-0003). Keeping it as one extra tab costs a tab label, not code. Tabs make Learn ↔ Quiz a single click, which C does not. *Confidence*: 0.65 — because only you know whether the harness still serves the metacognition class. *If wrong*: if this is now purely a DAT tool and the extra tab feels like clutter, flip to A.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+B — three tabs (Learn | Quiz | Chat). (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ### QST-TOPICS: Within a subject, how do you choose what to study?
-- Status: unanswered
+- Status: answered
 - Why asking: Learn mode needs to know what to explain, and Quiz mode needs to know what to ask about. The answer also decides what the future study tracker (ADR-0007) can record. If topics are free text, "enzymes," "Enzyme kinetics," and "enzymes!" are three different topics to a tracker.
 - Need: pick a letter (or override — any shape answers)
 
@@ -94,12 +94,12 @@ Options:
 **C — outline list + optional focus.** *Rationale*: The outline gives the future tracker stable categories (Explicitation 3). The free-text focus gives Learn mode the precision it needs, since you'll usually ask about a specific concept, not a whole outline heading. B gives up the tracker, and A gives up precision. *Confidence*: 0.75 — because both needs are explicit in your request. *If wrong*: if the outline headings feel too coarse to be useful even as categories, flip to B.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+C — outline list + optional focus. (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ### QST-FORMATTING: How should Learn and Quiz text be displayed?
-- Status: unanswered
+- Status: answered
 - Why asking: ADR-0002 currently requires every model reply to be inserted as plain text. That rule ensures a reply can never run code on the page that holds your API key. Step-by-step explanations with bold key terms and chemistry notation read much better formatted, and models tend to write Markdown (`**bold**`, `1.` lists), which plain text shows as raw symbols.
 - Need: pick a letter (or override — any shape answers)
 
@@ -113,19 +113,30 @@ Options:
 **B — Markdown, sanitized.** *Rationale*: Numbered steps and bold key terms are the core of Learn mode (ADR-0005), and raw asterisks work against "simple, clean." DOMPurify is the standard browser sanitizer and is heavily tested, so this trades a small, well-understood risk for readability. Under any option, the chemistry prompts ask for Unicode notation; rendering LaTeX (KaTeX) is not proposed. *Confidence*: 0.6 — because this trades a hard guarantee for a soft one, and preferring A is reasonable. *If wrong*: if you'd rather keep ADR-0002's guarantee absolute, flip to A.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+B — Markdown, sanitized (marked + DOMPurify). (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ## Decision
 
-*Pending QST-NAV, QST-TOPICS, and QST-FORMATTING.*
+### Chosen: three tabs (QST-NAV B); outline list + optional focus (QST-TOPICS C); sanitized Markdown (QST-FORMATTING B)
+
+**Rationale**: Jana accepted all three recommendations. The plain chat stays as a tab for class use. Stable outline topics prepare the future tracker, and a free-text focus gives Learn mode precision. Formatted explanations read cleanly, with DOMPurify as the safety boundary.
+
+**Trade-offs accepted**: Two new runtime dependencies (`marked`, `dompurify`). ADR-0002's rule is amended from "plain text only" to "sanitized HTML only." The topic headings are only partly verified (see Open Follow-ups).
+
+### Consequences
+- The Subject and Topic selectors apply to Learn and Quiz. The Chat tab ignores them.
+- Changing the subject or topic starts a fresh Learn conversation and a fresh quiz.
+- The topic lists live in one data file (`src/dat/topics.ts`) so they are easy to correct.
+- The user's own messages stay plain text. Only model output is rendered as Markdown.
 
 ---
 
 ## Open Follow-ups
 
 - [ ] Unverified assumption: the topic lists will come from the ADA DAT outline. Before building them, check them against the current DAT Guide or User's Manual from ada.org. The PDF could not be machine-read on 2026-11-19, so either Jana checks it or `brew install poppler` lets Claude extract it.
+  - NOT: partial check, 2026-11-19. One secondary page ([siue.edu/~cbwilso/DATtopics.htm](https://siue.edu/~cbwilso/DATtopics.htm), undated and not citing an ADA edition) supports the *content* of every candidate heading but not their exact wording. The Kaplan pages returned HTTP 403. Two gaps were noted. First, that page lists organic "analysis" (IR, ¹H NMR, chemical tests) as its own area, which the candidate list lacks. Second, it does not list "Laboratory" under General Chemistry. The lists were shipped as candidates; Jana should check them against her study materials.
 
 ---
 
@@ -143,6 +154,12 @@ Options:
 - Contributors: Jana Mourad, Claude Opus 5.5
 - Changes: framed the navigation, topic, and formatting questions
 - Outcome: Draft
+
+### Iteration 2 (2026-11-19)
+- Trigger: Jana's answers via the Claude Code question dialog
+- Contributors: Jana Mourad, Claude Opus 5.5
+- Changes: QST-NAV → B, QST-TOPICS → C, QST-FORMATTING → B; Decision filled; partial topic verification noted
+- Outcome: `Draft → Accepted`
 
 ---
 

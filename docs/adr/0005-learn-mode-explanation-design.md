@@ -9,11 +9,11 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 # Learn mode: explanation design
 
 - **Date**: 2026-11-19
-- **Iteration**: 1
-- **Status**: Draft
+- **Iteration**: 2
+- **Status**: Accepted
 - **Deciders**: Jana Mourad, Claude (Opus 5.5)
 
-**TL;DR**: Learn mode is a conversation scoped to the chosen subject and topic, driven by a hidden tutor prompt. The shape of each explanation is pending Jana's answer.
+**TL;DR**: Learn mode is a conversation scoped to the chosen subject and topic. Each new concept is explained in five fixed sections: Big idea, Step by step, Example, Common DAT trap, and Check yourself. Follow-ups are free-form.
 
 ---
 
@@ -46,7 +46,7 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 ## Questions
 
 ### QST-LEARN-STYLE: What shape should a Learn-mode explanation take?
-- Status: unanswered
+- Status: answered
 - Why asking: This is the core teaching style you'll experience every session. You asked for simple terms, step by step, with examples, and all three options deliver that. The difference is how predictable the layout is and whether the tutor lectures or asks you questions.
 - Need: pick a letter (or override — any shape answers)
 
@@ -60,13 +60,21 @@ Options:
 **B — fixed structure.** *Rationale*: A predictable layout is easier to scan and to review later. The **Common DAT trap** section targets the test-specific mistakes that general explanations skip. **Check yourself** turns each explanation into a quick retrieval check and gives a natural signal for ADR-0007's adaptive learning later. Because follow-ups are free-form, the template doesn't make small questions rigid. *Confidence*: 0.7 — because this is a learning-style preference, and you know how you learn. *If wrong*: if five sections feel heavy for quick questions, flip to A. If explanations aren't sticking, flip to C.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+B — fixed structure. (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ## Decision
 
-*Pending QST-LEARN-STYLE.*
+### Chosen: fixed structure (QST-LEARN-STYLE B)
+
+**Rationale**: Jana accepted the recommendation. A predictable layout is easy to scan and review. The **Common DAT trap** section targets exam-specific mistakes. **Check yourself** prompts recall and later gives ADR-0007 an understanding signal.
+
+**Trade-offs accepted**: Short questions still get the full template on their first turn. Follow-ups are free-form.
+
+### Consequences
+- The prompt lives in `src/dat/prompts.ts` and is built from the subject, topic, and optional focus.
+- If you answer the **Check yourself** question in the chat, the tutor tells you whether you were right and why.
 
 ---
 
@@ -89,6 +97,12 @@ Options:
 - Contributors: Jana Mourad, Claude Opus 5.5
 - Changes: framed the explanation-style question
 - Outcome: Draft
+
+### Iteration 2 (2026-11-19)
+- Trigger: Jana's answer via the Claude Code question dialog
+- Contributors: Jana Mourad, Claude Opus 5.5
+- Changes: QST-LEARN-STYLE → B; Decision filled
+- Outcome: `Draft → Accepted`
 
 ---
 
