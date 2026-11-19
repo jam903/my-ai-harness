@@ -256,7 +256,7 @@ Learn and Quiz work for any user-entered subject and topic (ADR-0008). Next: the
 - API key in localStorage with Forget key; model output rendered as **sanitized** HTML only (amended by ADR-0004) — see `docs/adr/0002-openrouter-api-key-handling-in-the-browser.md`
 - Model picker, default `openrouter/auto` — see `docs/adr/0003-chat-interface-scope-and-model-selection.md`
 - Learn | Quiz | Chat tabs; Markdown via marked + DOMPurify — see ADR-0004 (superseded in part by ADR-0008)
-- Learn mode: five fixed sections (Big idea → Step by step → Example → Common mistake → Check yourself) — see `docs/adr/0005-learn-mode-explanation-design.md`
+- Learn mode: interactive tutor that teaches one idea per reply, ends with one check question, and waits; it explains differently when you're confused, and draws text diagrams in code blocks (supersedes ADR-0005's five-section template) — see `docs/adr/0009-learn-mode-as-an-interactive-tutor.md`
 - Quiz mode: structured JSON with the solution before the answer, 5 clickable choices, every choice explained after every answer — see `docs/adr/0006-quiz-mode-question-format-and-feedback.md`
 - Free-text subject and topic with your previous entries suggested; code in `src/study/` — see `docs/adr/0008-general-purpose-study-assistant.md`
 - Tracker and adaptivity deferred; quiz answers are already logged to localStorage as `quiz-results` — see `docs/adr/0007-study-tracker-and-adaptive-learning.md`
