@@ -9,11 +9,11 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 # General-purpose study assistant
 
 - **Date**: 2026-11-19
-- **Iteration**: 1
-- **Status**: Draft
+- **Iteration**: 2
+- **Status**: Implemented
 - **Deciders**: Jana Mourad, Claude (Opus 5.5)
 
-**TL;DR**: The study assistant is no longer tied to one exam. Users type their own subject and optional topic, Learn and Quiz work for any subject, and all exam-specific presets, wording, and the `src/dat` directory are removed (now `src/study`). Two questions are open: how to handle the earlier ADRs, and how many quiz choices to use.
+**TL;DR**: The study assistant is no longer tied to one exam. Users type their own subject and optional topic, Learn and Quiz work for any subject, and exam-specific presets, wording, and `src/dat` are gone (now `src/study`). ADRs 0004–0007 are kept as history with superseded notes, and quizzes keep five choices.
 
 ---
 
@@ -47,7 +47,7 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 ## Questions
 
 ### QST-ADR-HISTORY: Should the earlier ADRs (0004–0007) keep their exam-specific wording?
-- Status: unanswered
+- Status: answered
 - Why asking: You asked for exam and dental-school references to be removed from "documentation." ADRs 0004–0007 contain about 35 such references, because they record *why* the exam-specific design was chosen, including your original request quoted verbatim. This project's methodology treats ADRs as a permanent decision record: superseded decisions are marked superseded, not rewritten. The interface, source code, tests, presets, and CLAUDE.md are cleaned under every option.
 - Need: pick a letter (or override — any shape answers)
 
@@ -60,12 +60,12 @@ Options:
 **A — keep as history, mark superseded.** *Rationale*: CLAUDE.md's Prime Directive exists to preserve reasoning, and the adr-authoring skill names silent walk-backs as the one dishonesty the format guards against. Rewriting 0004–0007 would turn real decisions into fictional ones while git history still holds the originals, so B removes the reasoning without actually removing the references. *Confidence*: 0.7 — because "documentation" could reasonably include the ADRs, and the repo is public, which may matter to you for privacy. *If wrong*: if the goal is that a visitor to the public repo sees no sign of your exam plans, flip to B. Truly erasing it from the public repo would also need a git-history rewrite, which is a separate, destructive step.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+A — keep as history, mark superseded. (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ### QST-CHOICES: How many answer choices should quiz questions have?
-- Status: unanswered
+- Status: answered
 - Why asking: ADR-0006 chose five choices (A–E) because the exam used five. For a general-purpose tool that reason is gone. Four choices (A–D) is the more common format across school and university tests.
 - Need: pick a letter (or override — any shape answers)
 
@@ -78,7 +78,7 @@ Options:
 **B — four (A–D).** *Rationale*: Four is the common default outside the exam that justified five, so the original rationale no longer applies. Four distractors are also harder for a model to make all plausible, so a fifth weak option mostly adds reading time. The code change is one constant plus tests. *Confidence*: 0.6 — because both are reasonable, and you asked to keep the Quiz feature, which could mean "unchanged." *If wrong*: if you're still preparing for a five-option test, flip to A.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+A — keep five (A–E) (recommendation was B; Jana chose A). (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
@@ -93,7 +93,12 @@ Options:
 - **Results log**: the localStorage key becomes `quiz-results`. Rows logged under the old key (a few hours of use at most) are not migrated, so no exam-specific key name remains in the source.
 - **Learn template**: "Common DAT trap" → **"Common mistake"**. The other four sections are unchanged.
 
-*QST-ADR-HISTORY and QST-CHOICES pending.*
+### Chosen by Jana
+
+- **QST-ADR-HISTORY → A (keep as history, mark superseded)**, as recommended. ADRs 0004–0007 each carry a superseded note at the top. CLAUDE.md, the interface, source, tests, and the built bundle contain no exam references (verified by grep, 2026-11-19).
+- **QST-CHOICES → A (keep five, A–E)**, **overriding** the recommendation of four. The prompt, parser, and tests still require exactly five choices.
+
+**Trade-offs accepted**: Quiz rows logged under the old storage key are not migrated. Free-text names can still fragment the future tracker; suggestions reduce this but don't prevent it.
 
 ---
 
@@ -105,8 +110,8 @@ Options:
 
 ## Action Items
 
-- [ ] Generalize the interface, prompts, tests, and CLAUDE.md; rename `src/dat` → `src/study` — Owner: Claude
-- [ ] Apply the QST-ADR-HISTORY and QST-CHOICES answers — Owner: Claude
+- [x] Generalize the interface, prompts, tests, and CLAUDE.md; rename `src/dat` → `src/study` — Owner: Claude
+- [x] Apply the QST-ADR-HISTORY and QST-CHOICES answers — Owner: Claude
 - [ ] Test, commit, push, and verify the deploy — Owner: Claude
 
 ---
@@ -118,6 +123,12 @@ Options:
 - Contributors: Jana Mourad, Claude Opus 5.5
 - Changes: recorded the decisions taken under the agency grant; two questions open
 - Outcome: Draft
+
+### Iteration 2 (2026-11-19)
+- Trigger: Jana's answers via the Claude Code question dialog; implementation
+- Contributors: Jana Mourad, Claude Opus 5.5
+- Changes: QST-ADR-HISTORY → A; QST-CHOICES → A (overriding B); generalization implemented, gate green (32 tests); superseded notes added to ADRs 0004–0007
+- Outcome: `Draft → Implemented`
 
 ---
 

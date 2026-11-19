@@ -15,6 +15,8 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 
 **TL;DR**: Subject dropdown and three tabs (Learn | Quiz | Chat). Topics come from a DAT outline list plus an optional free-text focus. Model replies render as Markdown, sanitized by DOMPurify. The tracker and adaptivity come later (ADR-0007).
 
+> **Superseded in part by [ADR-0008](0008-general-purpose-study-assistant.md) (2026-11-19):** the assistant is now general-purpose. The fixed subject and outline-topic lists are replaced by free-text subject and topic fields, the focus field is folded into the topic field, and `src/dat/` is now `src/study/`. The three tabs and sanitized Markdown still stand. This record is kept as written, as history (ADR-0008 QST-ADR-HISTORY).
+
 ---
 
 ## Originating Context

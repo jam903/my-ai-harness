@@ -15,6 +15,8 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 
 **TL;DR**: Deferred until Learn and Quiz ship. This ADR records the request and its open questions so the later work starts from them instead of from memory. Its one current effect is that v1 quiz results are already recorded with subject, topic, and correctness.
 
+> **Note from [ADR-0008](0008-general-purpose-study-assistant.md) (2026-11-19):** subjects and topics are now free text that the user types, not outline lists. Previous entries are suggested back to keep names consistent. The results log key is now `quiz-results`. Explicitation 3's "stable outline topics" no longer holds, so revisit how topics are grouped when this ADR is picked up.
+
 ---
 
 ## Originating Context

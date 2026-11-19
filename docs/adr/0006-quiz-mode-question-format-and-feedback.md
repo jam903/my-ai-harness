@@ -15,6 +15,8 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 
 **TL;DR**: Each question is generated as a structured reply, with the model's worked solution written before the answer letter, then shown as five clickable choices and graded instantly. After every answer, all choices are explained.
 
+> **Superseded in part by [ADR-0008](0008-general-purpose-study-assistant.md) (2026-11-19):** questions are no longer exam-specific, the level is inferred from the user's subject, and the model no longer reports an outline topic. **Five choices were kept** by Jana's choice (ADR-0008 QST-CHOICES). Solve-first JSON and explain-every-choice feedback still stand. This record is kept as written, as history.
+
 ---
 
 ## Originating Context
