@@ -3,27 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Metacognition Harness</title>
+    <title>DAT Study Assistant</title>
   </head>
   <body>
     <header class="bar">
-      <h1>Metacognition Harness</h1>
+      <h1>DAT Study Assistant</h1>
       <div id="key-area" class="key-area"></div>
     </header>
 
+    <nav class="tabs" role="tablist" aria-label="Mode">
+      <button type="button" role="tab" data-tab="learn" aria-controls="panel-learn">Learn</button>
+      <button type="button" role="tab" data-tab="quiz" aria-controls="panel-quiz">Quiz</button>
+      <button type="button" role="tab" data-tab="chat" aria-controls="panel-chat">Chat</button>
+    </nav>
+
     <section class="controls">
-      <label for="model">Model</label>
-      <input id="model" list="model-list" autocomplete="off" spellcheck="false" />
+      <div id="study-controls" class="study-controls">
+        <label>Subject <select id="subject"></select></label>
+        <label>Topic <select id="topic"></select></label>
+        <input id="focus" placeholder="Optional focus, e.g. Hardy-Weinberg" aria-label="Optional focus" />
+      </div>
+      <label class="model-label">
+        Model
+        <input id="model" list="model-list" autocomplete="off" spellcheck="false" />
+      </label>
       <datalist id="model-list"></datalist>
-      <button id="new-chat" type="button">New chat</button>
     </section>
 
-    <main id="messages" class="messages" aria-live="polite"></main>
-
-    <form id="composer" class="composer">
-      <textarea id="input" rows="3" placeholder="Type a message — Enter to send, Shift+Enter for a newline"></textarea>
-      <button id="send" type="submit">Send</button>
-    </form>
+    <main class="panels">
+      <section id="panel-learn" class="panel" role="tabpanel"></section>
+      <section id="panel-quiz" class="panel" role="tabpanel" hidden></section>
+      <section id="panel-chat" class="panel" role="tabpanel" hidden></section>
+    </main>
 
     <script type="module" src="/src/main.ts"></script>
   </body>

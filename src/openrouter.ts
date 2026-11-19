@@ -1,7 +1,7 @@
 // OpenRouter client — pure request/response logic, kept DOM-free so it can be tested.
 // The API key is passed in per call and only ever sent to OPENROUTER_BASE (ADR-0002).
 
-export type Role = 'user' | 'assistant';
+export type Role = 'system' | 'user' | 'assistant';
 
 export interface ChatMessage {
   role: Role;

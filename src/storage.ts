@@ -33,3 +33,7 @@ export function forgetKey(): void {
 
 export const loadModel = () => get(MODEL_ITEM);
 export const saveModel = (model: string) => set(MODEL_ITEM, model);
+
+// UI conveniences (last tab, subject, topic) — losing these is harmless.
+export const loadPref = (name: string) => get(`pref-${name}`);
+export const savePref = (name: string, value: string) => set(`pref-${name}`, value);
