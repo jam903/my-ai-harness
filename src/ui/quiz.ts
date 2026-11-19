@@ -1,9 +1,8 @@
 // Quiz tab (ADR-0006): one question at a time, clickable choices, instant grading,
 // and — per Jana's QST-QUIZ-FEEDBACK answer — every choice explained after every answer.
-import { generateQuizQuestion, LETTERS, type QuizQuestion } from '../dat/quiz';
-import type { StudyContext } from '../dat/prompts';
-import { recordQuizResult } from '../dat/results';
-import { SUBJECTS } from '../dat/topics';
+import { generateQuizQuestion, LETTERS, type QuizQuestion } from '../study/quiz';
+import type { StudyContext } from '../study/prompts';
+import { recordQuizResult } from '../study/results';
 import { renderInlineMarkdown, renderMarkdown } from '../markdown';
 import { el } from './dom';
 
@@ -44,14 +43,14 @@ export function mountQuiz(root: HTMLElement, deps: QuizDeps): Quiz {
     nextBtn.disabled = false;
     nextBtn.textContent = 'Start quiz';
     card.replaceChildren(
-      el('p', 'hint', notice ?? 'Pick a subject and topic above, then press Start quiz. Questions come one at a time.'),
+      el('p', 'hint', notice ?? 'Enter a subject (and optionally a topic) above, then press Start quiz. Questions come one at a time.'),
     );
     renderScore();
   }
 
   function showQuestion(q: QuizQuestion, model: string, ctx: StudyContext) {
     card.replaceChildren();
-    const meta = el('div', 'msg-label', `${SUBJECTS[ctx.subject].label} · ${q.topic ?? ctx.topic} · ${model}`);
+    const meta = el('div', 'msg-label', `${ctx.subject.trim()} · ${ctx.topic.trim() || 'any topic'} · ${model}`);
     const stem = el('div', 'quiz-stem md');
     stem.innerHTML = renderMarkdown(q.question);
     const list = el('div', 'choices');
@@ -78,8 +77,8 @@ export function mountQuiz(root: HTMLElement, deps: QuizDeps): Quiz {
       score = { correct: score.correct + (correct ? 1 : 0), total: score.total + 1 };
       renderScore();
       recordQuizResult({
-        subject: ctx.subject,
-        topic: q.topic ?? ctx.topic,
+        subject: ctx.subject.trim(),
+        topic: ctx.topic.trim(),
         correct,
         timestamp: Date.now(),
       });
@@ -120,6 +119,10 @@ export function mountQuiz(root: HTMLElement, deps: QuizDeps): Quiz {
       return;
     }
     const ctx = deps.getContext();
+    if (!ctx.subject.trim()) {
+      card.replaceChildren(el('p', 'error', 'Enter a subject above first — for example "Biology" or "Microeconomics".'));
+      return;
+    }
     const mine = generation;
     busy = true;
     nextBtn.disabled = true;

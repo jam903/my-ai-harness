@@ -1,13 +1,11 @@
-// Quiz question generation and validation (ADR-0006 QST-QUIZ-FORMAT A: structured, solve first).
+// Quiz question generation and validation (ADR-0006 QST-QUIZ-FORMAT A: structured, solve first;
+// five choices kept per ADR-0008 QST-CHOICES).
 import { sendChat } from '../openrouter';
 import { quizMessages, type StudyContext } from './prompts';
-import { topicsFor } from './topics';
 
 export const LETTERS = ['A', 'B', 'C', 'D', 'E'] as const;
 
 export interface QuizQuestion {
-  /** Outline topic the model says it tested, if it named a valid one. */
-  topic: string | null;
   question: string;
   choices: string[];
   solution: string;
@@ -40,15 +38,15 @@ function stripLetterLabel(choice: string): string {
   return choice.replace(/^\s*\(?[A-Ea-e][.)]\s+/, '').trim();
 }
 
-export function parseQuizQuestion(text: string, allowedTopics: readonly string[]): QuizQuestion {
-  const raw = extractJson(text);
-  const { topic, question, choices, solution, answer, explanations } = raw;
+export function parseQuizQuestion(text: string): QuizQuestion {
+  const { question, choices, solution, answer, explanations } = extractJson(text);
+  const n = LETTERS.length;
 
   if (!isText(question)) throw new QuizFormatError(`${FORMAT_HELP} (missing question).`);
   if (!isText(solution)) throw new QuizFormatError(`${FORMAT_HELP} (missing worked solution).`);
-  if (!Array.isArray(choices) || choices.length !== 5 || !choices.every(isText))
-    throw new QuizFormatError(`${FORMAT_HELP} (needs exactly five choices).`);
-  if (!Array.isArray(explanations) || explanations.length !== 5 || !explanations.every(isText))
+  if (!Array.isArray(choices) || choices.length !== n || !choices.every(isText))
+    throw new QuizFormatError(`${FORMAT_HELP} (needs exactly ${n} choices).`);
+  if (!Array.isArray(explanations) || explanations.length !== n || !explanations.every(isText))
     throw new QuizFormatError(`${FORMAT_HELP} (needs one explanation per choice).`);
 
   const letter = typeof answer === 'string' ? answer.toUpperCase().replace(/[^A-Z]/g, '') : '';
@@ -56,7 +54,6 @@ export function parseQuizQuestion(text: string, allowedTopics: readonly string[]
   if (answerIndex === -1) throw new QuizFormatError(`${FORMAT_HELP} (answer must be a letter A–E).`);
 
   return {
-    topic: isText(topic) && allowedTopics.includes(topic) ? topic : null,
     question: question.trim(),
     choices: choices.map(stripLetterLabel),
     solution: solution.trim(),
@@ -84,14 +81,13 @@ export async function generateQuizQuestion(
   fetchImpl: FetchLike = fetch,
   random: () => number = Math.random,
 ): Promise<GeneratedQuestion> {
-  const topics = topicsFor(ctx.subject);
   const targetLetter = LETTERS[Math.floor(random() * LETTERS.length)];
-  const messages = quizMessages(ctx, topics, previousStems, targetLetter);
+  const messages = quizMessages(ctx, previousStems, targetLetter);
 
   for (let attempt = 1; ; attempt++) {
     const reply = await sendChat(apiKey, model, messages, fetchImpl);
     try {
-      return { question: parseQuizQuestion(reply.content, topics), model: reply.model };
+      return { question: parseQuizQuestion(reply.content), model: reply.model };
     } catch (err) {
       if (!(err instanceof QuizFormatError) || attempt >= 2) throw err;
     }

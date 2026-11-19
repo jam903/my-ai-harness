@@ -23,7 +23,7 @@ describe('renderMarkdown', () => {
   });
 
   it('opens links in a new tab so clicking one does not wipe the study session', () => {
-    const html = renderMarkdown('[ADA](https://www.ada.org)');
+    const html = renderMarkdown('[source](https://example.org)');
     expect(html).toContain('target="_blank"');
     expect(html).toContain('rel="noopener noreferrer"');
   });

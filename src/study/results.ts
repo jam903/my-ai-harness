@@ -8,7 +8,7 @@ export interface QuizResult {
   timestamp: number;
 }
 
-const ITEM = 'dat-quiz-results';
+const ITEM = 'quiz-results';
 
 export function loadQuizResults(): QuizResult[] {
   try {

@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DAT Study Assistant</title>
+    <title>Study Assistant</title>
   </head>
   <body>
     <header class="bar">
-      <h1>DAT Study Assistant</h1>
+      <h1>Study Assistant</h1>
       <div id="key-area" class="key-area"></div>
     </header>
 
@@ -19,9 +19,16 @@
 
     <section class="controls">
       <div id="study-controls" class="study-controls">
-        <label>Subject <select id="subject"></select></label>
-        <label>Topic <select id="topic"></select></label>
-        <input id="focus" placeholder="Optional focus, e.g. Hardy-Weinberg" aria-label="Optional focus" />
+        <label>
+          Subject
+          <input id="subject" list="subject-list" autocomplete="off" placeholder="e.g. Organic Chemistry, US History" />
+        </label>
+        <datalist id="subject-list"></datalist>
+        <label>
+          Topic
+          <input id="topic" list="topic-list" autocomplete="off" placeholder="Optional, e.g. Stereochemistry" />
+        </label>
+        <datalist id="topic-list"></datalist>
       </div>
       <label class="model-label">
         Model

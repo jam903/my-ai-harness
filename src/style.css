@@ -91,8 +91,8 @@ button:disabled { opacity: 0.5; cursor: default; }
 .controls { display: flex; flex-wrap: wrap; gap: 8px 16px; padding: 10px 0; align-items: center; }
 .study-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; flex: 1 1 100%; }
 .study-controls label, .model-label { display: flex; align-items: center; gap: 6px; font-size: 0.9rem; color: var(--muted); }
-.study-controls select { color: var(--fg); max-width: 100%; }
-#focus { flex: 1; min-width: 180px; }
+.study-controls label { flex: 1 1 220px; }
+.study-controls input { flex: 1; min-width: 0; color: var(--fg); }
 .model-label { flex: 1 1 100%; }
 .model-label input { flex: 1; min-width: 0; color: var(--fg); }
 
