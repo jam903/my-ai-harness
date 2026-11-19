@@ -90,7 +90,7 @@ const learn = mountConversation(byId('panel-learn'), {
   getSystemPrompt: () => learnSystemPrompt(context()),
   placeholder: 'Ask about a concept, e.g. "How does photosynthesis store energy?"',
   emptyHint:
-    'Enter a subject (and optionally a topic) above, then ask about any concept. New concepts are explained as Big idea → Step by step → Example → Common mistake → Check yourself.',
+    'Enter a subject (and optionally a topic) above, then ask about any concept. Your tutor will teach it one small step at a time and check your understanding as you go. Say "I\'m confused" anytime to get a different explanation.',
 });
 const quiz = mountQuiz(byId('panel-quiz'), { getKey, getModel, getContext: context });
 mountConversation(byId('panel-chat'), {

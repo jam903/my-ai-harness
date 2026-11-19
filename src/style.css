@@ -119,6 +119,23 @@ button:disabled { opacity: 0.5; cursor: default; }
 .msg-body p, .md p { margin: 6px 0; }
 .msg-body ul, .msg-body ol, .md ul, .md ol { margin: 6px 0; padding-left: 22px; }
 .msg-body code, .md code { font-size: 0.9em; background: var(--bg); padding: 1px 4px; border-radius: 4px; }
+/* Text diagrams (ADR-0009): fixed-width, never wrapped, scroll sideways instead of breaking alignment. */
+.msg-body pre, .md pre {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  overflow-x: auto;
+  line-height: 1.35;
+  margin: 8px 0;
+}
+.msg-body pre code, .md pre code {
+  background: none;
+  padding: 0;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  white-space: pre;
+  overflow-wrap: normal;
+}
 .msg-body table, .md table { border-collapse: collapse; margin: 6px 0; }
 .msg-body th, .msg-body td, .md th, .md td { border: 1px solid var(--border); padding: 4px 8px; }
 a { color: var(--accent); }

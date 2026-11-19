@@ -90,6 +90,17 @@ describe('prompts', () => {
     expect(user.content).toContain('What organelle makes ATP?');
   });
 
+  it('learn prompt is the one-idea-per-turn tutor (ADR-0009), not the old five-section dump (ADR-0005)', () => {
+    // Guards the decision Jana made in ADR-0009 QST-LEARN-FLOW: an edit that reintroduces the
+    // one-message template, or drops check-and-wait, silently changes the teaching style.
+    const prompt = learnSystemPrompt({ subject: 'Biology', topic: 'Genetics' });
+    expect(prompt).not.toMatch(/### Big idea|### Check yourself/);
+    expect(prompt).toContain('One idea per reply');
+    expect(prompt).toMatch(/exactly one short question[\s\S]*stop and wait/);
+    expect(prompt).toContain('do NOT repeat or reword the same explanation');
+    expect(prompt).toContain('fenced code block'); // ADR-0009 QST-DIAGRAMS A: text diagrams
+  });
+
   it('learn prompt still works with no subject entered, as a general tutor', () => {
     const prompt = learnSystemPrompt({ subject: '', topic: '' });
     expect(prompt).toContain('whatever subject they ask about');

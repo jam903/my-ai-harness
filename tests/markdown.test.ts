@@ -28,6 +28,15 @@ describe('renderMarkdown', () => {
     expect(html).toContain('rel="noopener noreferrer"');
   });
 
+  it('keeps a text diagram aligned: no <br> or collapsed spaces inside code blocks (ADR-0009)', () => {
+    // `breaks: true` turns single newlines into <br> in prose; a diagram must stay exact.
+    const diagram = '[ Sunlight ] --> [ Chloroplast ]\n                     |\n                     v\n                [ Glucose ]';
+    const html = renderMarkdown('```\n' + diagram + '\n```');
+    expect(html).toContain('<pre><code>');
+    expect(html).not.toContain('<br>');
+    expect(html).toContain('                     |\n                     v');
+  });
+
   it('keeps Unicode chemistry notation intact', () => {
     expect(renderInlineMarkdown('CO₃²⁻ + 2H⁺ ⇌ H₂CO₃')).toBe('CO₃²⁻ + 2H⁺ ⇌ H₂CO₃');
   });
