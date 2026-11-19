@@ -17,6 +17,8 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 
 > **Superseded in part by [ADR-0008](0008-general-purpose-study-assistant.md) (2026-11-19):** the prompt is no longer exam-anchored. "Common DAT trap" is now **"Common mistake"**, the level is inferred from the user's subject, and the prompt lives in `src/study/prompts.ts`. The five-section structure still stands. This record is kept as written, as history.
 
+> **Superseded by [ADR-0009](0009-learn-mode-as-an-interactive-tutor.md) (2026-11-19):** the five-section template is gone. Learn mode now teaches one idea per reply and ends each reply with a single check question, then waits for the student's answer (ADR-0009 QST-LEARN-FLOW A).
+
 ---
 
 ## Originating Context

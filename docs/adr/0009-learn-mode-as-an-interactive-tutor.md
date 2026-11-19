@@ -9,11 +9,11 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 # Learn mode as an interactive tutor
 
 - **Date**: 2026-11-19
-- **Iteration**: 1
-- **Status**: Draft
+- **Iteration**: 2
+- **Status**: Implemented
 - **Deciders**: Jana Mourad, Claude (Opus 5.5)
 
-**TL;DR**: Rewrite Learn mode's hidden instructions so the tutor teaches the way a patient personal tutor would: a first-time learner, one idea per turn, terms defined first, why and how explained, analogies and examples, links to earlier ideas, a check before moving on, a different explanation when confused, and diagrams where useful. Whether the five-section template survives, and how diagrams are drawn, are open.
+**TL;DR**: Learn mode is now an interactive tutor. Each reply teaches one idea for a first-time learner (terms defined first, the why and how, an analogy or example, links to earlier ideas), ends with one check question, and waits; confusion gets a different explanation. The five-section template is gone (no roadmap), and diagrams are text drawn inside code blocks, with no new dependencies.
 
 ---
 
@@ -64,7 +64,7 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 ## Questions
 
 ### QST-LEARN-FLOW: Should Learn mode keep the five-section template?
-- Status: unanswered
+- Status: answered
 - Why asking: In ADR-0005 you chose a fixed five-section answer (Big idea → Step by step → Example → Common mistake → Check yourself), all in one message. Your new request asks for one concept at a time and a check before moving on. That means short turns that wait for you, which a five-section message can't do. This question decides which pattern Learn mode follows from now on.
 - Need: pick a letter (or override — any shape answers)
 
@@ -78,12 +78,12 @@ Options:
 **C — roadmap, then one step per turn.** *Rationale*: Your request asks for one idea at a time with a check between, which only A and C deliver. B still sends everything at once. Between those two, C's short roadmap adds orientation without more content: you see where you're headed, and each step can be explicitly tied to the ones before (your "connects new concepts" item). *Confidence*: 0.65 — because this reverses your ADR-0005 choice, and whether a roadmap feels helpful or like overhead is a matter of taste. *If wrong*: if the roadmap feels like a lecture outline rather than a conversation, flip to A. If short turns feel slow when reviewing material you mostly know, flip to B.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+A — one step per turn, no roadmap (recommendation was C; Jana chose A). (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ### QST-DIAGRAMS: How should the tutor draw diagrams?
-- Status: unanswered
+- Status: answered
 - Why asking: You asked for diagrams and visual explanations where helpful. Today the app shows formatted text (Markdown) only, so any "diagram" has to be drawn out of characters. Real drawn diagrams need a rendering library, which has costs in download size and in security, since this is a page that holds your API key.
 - Need: pick a letter (or override — any shape answers)
 
@@ -96,13 +96,24 @@ Options:
 **B — drawn diagrams (Mermaid).** *Rationale*: Flows and cycles (a cell cycle, a supply-and-demand shift, a recursion call stack) are where visuals help most, and they are exactly what Mermaid draws. Loading it only when a diagram appears keeps the first page load as fast as today. Strict mode plus a second DOMPurify pass keeps ADR-0002's sanitized-only rule. *Confidence*: 0.6 — because it adds the project's largest dependency and a new path from model output to the page, which you may reasonably not want. *If wrong*: if diagrams render unreliably or slowly in practice, or if you'd rather keep the dependency list minimal, flip to A.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+A — text diagrams only (recommendation was B; Jana chose A). (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ## Decision
 
-*Pending QST-LEARN-FLOW and QST-DIAGRAMS.* Decided under the agency grant: the tutor instructions are rewritten around Jana's nine points, with "first time" reconciled with the subject's level as in Explicitation 2.
+### Chosen
+
+- **QST-LEARN-FLOW → A (one step per turn, no roadmap)**, **overriding** the recommendation of C. This supersedes ADR-0005's QST-LEARN-STYLE B.
+- **QST-DIAGRAMS → A (text diagrams only)**, **overriding** the recommendation of B. No diagram library is added, and ADR-0002's sanitized-rendering boundary is unchanged.
+- **Decided under the agency grant**: the tutor instructions (`learnSystemPrompt` in `src/study/prompts.ts`) are rewritten as ten numbered rules, one for each of Jana's nine points, plus "respond to the answer," which turns the check question into a real loop. "First time" is reconciled with the subject's level as in Explicitation 2. A quick factual question gets a direct answer plus an offer to explain the why, so the tutor doesn't make you walk through steps for one fact.
+- **Supporting change**: code blocks now render as fixed-width, unwrapped, and side-scrolling, so text diagrams keep their alignment (CSS). A test asserts the renderer leaves diagram spacing intact.
+
+**Trade-offs accepted**: Learning a whole topic takes more turns, and therefore more API calls, than a single five-section message. Text diagrams are only as tidy as the model draws them. Prompt quality has **not** been evaluated against a live model in this session, because no key was available. The tests verify the instructions and rendering, not the tutor's actual behavior.
+
+### Consequences
+- The Learn tab's start hint now describes the step-by-step rhythm and the "I'm confused" escape hatch.
+- Quiz and Chat are unchanged.
 
 ---
 
@@ -115,8 +126,8 @@ Options:
 
 ## Action Items
 
-- [ ] Rewrite the Learn tutor instructions and the Learn tab's start hint — Owner: Claude
-- [ ] Apply the QST-LEARN-FLOW and QST-DIAGRAMS answers — Owner: Claude
+- [x] Rewrite the Learn tutor instructions and the Learn tab's start hint — Owner: Claude
+- [x] Apply the QST-LEARN-FLOW and QST-DIAGRAMS answers — Owner: Claude
 - [ ] Test, commit, push, and verify the deploy — Owner: Claude
 
 ---
@@ -128,6 +139,12 @@ Options:
 - Contributors: Jana Mourad, Claude Opus 5.5
 - Changes: framed the template-vs-turns conflict with ADR-0005 and the diagram rendering question
 - Outcome: Draft
+
+### Iteration 2 (2026-11-19)
+- Trigger: Jana's answers via the Claude Code question dialog; implementation
+- Contributors: Jana Mourad, Claude Opus 5.5
+- Changes: QST-LEARN-FLOW → A (overriding C); QST-DIAGRAMS → A (overriding B); tutor instructions rewritten; code-block CSS for diagrams; gate green (34 tests); ADR-0005 marked superseded
+- Outcome: `Draft → Implemented`
 
 ---
 
