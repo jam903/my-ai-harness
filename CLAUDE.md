@@ -1,19 +1,9 @@
 # CLAUDE.md - Project Guidance
 
-> **Instantiating this template?** Placeholders look like ⟦THIS⟧ — fill-and-delete
-> each one (grep-proof on purpose; `just instantiate-check` reports which remain
-> and passes only when none do). Square-bracket text elsewhere is either a
-> per-document mold slot (filled at each mint, not at birth) or the frozen
-> dialogue placeholder `[Fill this in]` — never convert those. *(This note is
-> visible text, not an HTML comment, because the harness strips block comments
-> from the CLAUDE.md it serves at session start — a cold instantiator proved the
-> instructions were sitting exactly where their audience could not see them.
-> Delete this block when instantiation is done.)*
-
-- **Project**: ⟦PROJECT-NAME⟧
-- **Human**: ⟦HUMANS⟧
-- **AI**: ⟦AI-SEATS⟧ <!-- with the crew layer, the roster lives in docs/inbox/agent-sessions.json; name the coordinator seat here -->
-- **Last Updated**: ⟦LAST-UPDATED⟧
+- **Project**: My AI Harness (Computationally Assisted Metacognition)
+- **Human**: Jana Mourad
+- **AI**: Claude Code (single seat, no crew layer yet)
+- **Last Updated**: 2026-11-19
 
 ---
 
@@ -98,15 +88,15 @@ Tests should:
 **RUN THIS PROJECT'S VERIFICATION GATE BEFORE EVERY COMMIT**
 
 Before serving any change:
-1. Run the project's verification gate: ⟦VERIFICATION-GATE⟧ <!-- test suite, build, linter, or a combination; e.g. `npm test`, `uv run pytest`, `hugo && bin/check` -->
+1. Run the project's verification gate: `npm run check` (typecheck → Vitest → production build; ADR-0001 QST-GATE)
 2. Fix any failures before committing
 3. Never serve changes with a failing gate
 
-**Why**: ⟦GATE-WHY⟧ <!-- state what this project's gate actually catches — real classes of bug, real numbers if you have them. A directive that names a real gate gets followed; an unfollowable one teaches every seat that directives are decorative, and that lesson generalizes. -->
+**Why**: Vite strips types without checking them, so `tsc --noEmit` is the only thing standing between a type error and the live site. On its very first run, it caught a missing `vite/client` type reference that the build alone would have shipped. The Vitest suite (`tests/openrouter.test.ts`) pins the behaviors that fail silently in a browser-only app: full history sent each turn, the key sent only to openrouter.ai, and OpenRouter errors (401/402/HTTP-200-with-error/non-JSON) turned into readable messages. The same command runs in CI before every deploy (`.github/workflows/deploy.yml`), so a red gate never reaches Pages.
 
 **Process**:
 ```bash
-⟦VERIFICATION-GATE⟧            # Must be green before commit
+npm run check                  # Must be green before commit
 git add <explicit paths>       # never -A: stage by path, commit by pathspec — see CONVENTIONS.md, shared-worktree awareness
 git commit -m "..." -- <paths>
 ```
@@ -256,13 +246,23 @@ If the script was successfully used, append as comments how, and what the outcom
 ## Project Context
 
 ### What we're building:
-⟦PROJECT-GOAL⟧ <!-- 1-3 sentences; same token as ONBOARDING's — one text serves both -->
+A deliberately minimal AI chat harness for Jana's Computationally Assisted Metacognition class. It is a static TypeScript page on GitHub Pages that talks to models through the OpenRouter API directly from the browser. Each user brings their own key, entered at runtime and never committed. Live at https://jam903.github.io/my-ai-harness/.
 
 ### Current focus:
-⟦CURRENT-FOCUS⟧
+v1 shipped: bare chat plus model picker. Next steps come from the class's needs (candidates: system prompt box, streaming, persistence; see ADR-0003).
 
 ### Key decisions made:
-*(List ADRs here as they land, e.g. `- Auth approach — see docs/adr/0001-*.md`. Empty at birth is healthy.)*
+- Stack, deploy, gate (Vite + GitHub Actions → Pages; `npm run check`) — see `docs/adr/0001-stack-build-and-deployment-to-github-pages.md`
+- API key in localStorage with Forget key; replies rendered as text only — see `docs/adr/0002-openrouter-api-key-handling-in-the-browser.md`
+- v1 scope = bare chat + model picker, default `openrouter/auto` — see `docs/adr/0003-chat-interface-scope-and-model-selection.md`
+
+### Commands:
+```bash
+npm install        # once
+npm run dev        # local dev server (http://localhost:5173/my-ai-harness/)
+npm run check      # the gate
+git push           # deploys via .github/workflows/deploy.yml
+```
 
 ### Open questions:
 ```bash
