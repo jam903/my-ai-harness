@@ -9,11 +9,11 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 # Stack, build, and deployment to GitHub Pages
 
 - **Date**: 2026-11-19
-- **Iteration**: 1
-- **Status**: Draft
+- **Iteration**: 2
+- **Status**: Accepted
 - **Deciders**: Jana Mourad, Claude (Opus 5.5)
 
-**TL;DR**: A static TypeScript single-page app, built and deployed to GitHub Pages by GitHub Actions, with no server of its own. Tooling and the verification gate are pending Jana's answers.
+**TL;DR**: Vite (vanilla-ts) builds a static single-page app that a GitHub Actions workflow deploys to Pages on every push to `main`; the gate is `npm run check` (typecheck + Vitest + build).
 
 ---
 
@@ -54,7 +54,7 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 ## Questions
 
 ### QST-STACK: Which build tooling and deploy mechanism?
-- Status: unanswered
+- Status: answered
 - Why asking: TypeScript has to become JavaScript before GitHub Pages can serve it. The tooling choice decides how much config the project carries and whether a local dev server with live reload exists. The site is served from the `/my-ai-harness/` subpath, not the domain root, so asset paths must account for that.
 - Need: pick a letter (or override — any shape answers)
 
@@ -68,12 +68,12 @@ Options:
 **A — vite-actions.** *Rationale*: Vite's `vanilla-ts` template is the smallest setup that gives you a dev server and correct bundling. The subpath problem is fixed by one setting (`base: '/my-ai-harness/'`). C collides with `docs/adr/` in this repo, and its "rebuild before push" step is the kind that gets forgotten. B saves one dependency but makes local iteration worse. *Confidence*: 0.85 — because this is the stock path for a TypeScript single-page app on Pages, and the subpath and folder facts were checked against this repo. *If wrong*: if you want to see exactly what the compiler emits with no bundler in between (a reasonable choice for a learning project), flip to B.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+A — vite-actions. (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ### QST-GATE: What is the verification gate run before every commit?
-- Status: unanswered
+- Status: answered
 - Why asking: CLAUDE.md's Fifth Directive requires a real gate command, and currently it holds only a placeholder. The gate should catch real bugs without slowing a tiny project down.
 - Need: pick a letter (or override — any shape answers)
 
@@ -87,13 +87,25 @@ Options:
 **A — typecheck+tests+build.** *Rationale*: The Third and Fourth Directives (regression tests, meaningful tests) assume a test runner exists. Vitest needs no config alongside Vite. The request-building and error-mapping code is pure functions, so it can be tested without mocks. C misses a real gap: Vite does not typecheck. *Confidence*: 0.8 — because the gate costs seconds at this size. *If wrong*: if the tests turn out to be testing nothing real (Fourth Directive), drop to B instead of padding them.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+A — typecheck+tests+build. (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ## Decision
 
-*Pending answers to QST-STACK and QST-GATE.*
+### Context
+GitHub Pages serves only static files, and TypeScript must be compiled before it can be served.
+
+### Chosen: Vite + GitHub Actions (QST-STACK A); typecheck + tests + build gate (QST-GATE A)
+
+**Rationale**: The smallest setup with a real dev loop. The `/my-ai-harness/` subpath is handled by Vite's `base`. No compiled output goes into git. Vitest reuses Vite's config, so the gate needs no extra setup.
+
+**Trade-offs accepted**: Vite and Vitest are dev dependencies. The deployed site is only as fresh as the last green Actions run.
+
+### Consequences
+- `npm run dev` gives a local dev server. `npm run check` is the Fifth Directive gate.
+- `.github/workflows/deploy.yml` builds and deploys. Pages source is set to "GitHub Actions".
+- Live at `https://jam903.github.io/my-ai-harness/`.
 
 ---
 
@@ -118,6 +130,12 @@ Options:
 - Contributors: Jana Mourad, Claude Opus 5.5
 - Changes: framed the stack/deploy and gate questions
 - Outcome: Draft
+
+### Iteration 2 (2026-11-19)
+- Trigger: Jana's answers via the Claude Code question dialog
+- Contributors: Jana Mourad, Claude Opus 5.5
+- Changes: QST-STACK → A, QST-GATE → A; Decision filled
+- Outcome: `Draft → Accepted`
 
 ---
 

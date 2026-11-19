@@ -9,11 +9,11 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 # Chat interface scope and model selection
 
 - **Date**: 2026-11-19
-- **Iteration**: 1
-- **Status**: Draft
+- **Iteration**: 2
+- **Status**: Accepted
 - **Deciders**: Jana Mourad, Claude (Opus 5.5)
 
-**TL;DR**: A single-page chat: a message list, an input, and a send button, calling OpenRouter's `/api/v1/chat/completions`. Which extras ship in v1 is pending Jana's answer.
+**TL;DR**: v1 is a bare single-page chat (message list, input, Send) calling OpenRouter's `/api/v1/chat/completions`, plus a model picker with live suggestions; no system prompt, streaming, or persistence yet.
 
 ---
 
@@ -46,7 +46,7 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 ## Questions
 
 ### QST-V1-SCOPE: Which extras ship in v1, beyond the bare chat?
-- Status: unanswered
+- Status: answered
 - Why asking: Each extra adds code between you and a first deploy. The bare chat is a message list, an input, Send, and a fixed model (`openrouter/auto`). Everything here is optional and can come later.
 - Need: pick any letters (none is a valid answer), or override
 
@@ -61,13 +61,21 @@ Options:
 **A + B — model picker and system prompt; defer C and D.** *Rationale*: A and B together are about 40 lines, and they are the two variables a metacognition class most plausibly manipulates: who is answering, and under what instructions (Explicitation 3). C is pure UX and adds the most code (stream parsing). D raises a data-retention question about storing transcripts that deserves its own decision. *Confidence*: 0.65 — because I'm inferring the course's exercises from its name. *If wrong*: if your assignments involve long sessions that must survive a refresh, add D. If you'll watch reasoning unfold live, add C.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+A only — model picker. Not B (system prompt box), not C (streaming), not D (persistence) for v1. (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ## Decision
 
-*Pending QST-V1-SCOPE.*
+### Chosen: baseline chat + model picker (QST-V1-SCOPE: A only)
+
+**Rationale**: Jana chose the model picker and declined the recommended system prompt box. The v1 variable is *which model answers*. The default model is `openrouter/auto`, and each reply is labeled with the model that actually answered.
+
+**Trade-offs accepted**: No system prompt, streaming, or persistence. A reload or **New chat** clears the conversation.
+
+### Consequences
+- Replies are rendered as plain text (ADR-0002 constraint).
+- Model suggestions come from `GET https://openrouter.ai/api/v1/models`. If that fetch fails, the field still accepts any typed model ID.
 
 ---
 
@@ -84,6 +92,12 @@ Options:
 - Contributors: Jana Mourad, Claude Opus 5.5
 - Changes: framed the v1-scope question; recorded the baseline and default model
 - Outcome: Draft
+
+### Iteration 2 (2026-11-19)
+- Trigger: Jana's answer via the Claude Code question dialog
+- Contributors: Jana Mourad, Claude Opus 5.5
+- Changes: QST-V1-SCOPE → A only (recommendation was A + B; Jana declined B); Decision filled
+- Outcome: `Draft → Accepted`
 
 ---
 

@@ -9,11 +9,11 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 # OpenRouter API key handling in the browser
 
 - **Date**: 2026-11-19
-- **Iteration**: 1
-- **Status**: Draft
+- **Iteration**: 2
+- **Status**: Accepted
 - **Deciders**: Jana Mourad, Claude (Opus 5.5)
 
-**TL;DR**: The key is typed into the page at runtime and never enters the source, the build, or git. Where the browser keeps it between visits is pending Jana's answer.
+**TL;DR**: The key is pasted into the page at runtime, kept in `localStorage` until **Forget key** is clicked, sent only to openrouter.ai, and never present in source, build, or git.
 
 ---
 
@@ -46,7 +46,7 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 ## Questions
 
 ### QST-KEY-STORAGE: Where should the browser keep your OpenRouter key?
-- Status: unanswered
+- Status: answered
 - Why asking: This trades convenience against how long the key sits on the device. The key is never in git or the deployed code under any option. The question is only whether you must paste it again on each visit.
 - Need: pick a letter (or override — any shape answers)
 
@@ -61,13 +61,19 @@ Options:
 **A — remember (localStorage), with a visible Forget key button.** *Rationale*: For a personal class tool on your own laptop, re-pasting every session (B, C) is friction without a real threat model behind it. D adds an auth flow and still lands on A–C. Two cheap mitigations matter more than the storage choice. First, render replies as text only (Explicitation 2). Second, **create a dedicated OpenRouter key with a credit limit** for this harness, so the worst case of a leak is bounded. *Confidence*: 0.7 — because the choice depends on where you'll use it, which only you know. *If wrong*: if you'll use shared or lab computers, flip to B.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+A — remember (localStorage), with a Forget key button. (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ## Decision
 
-*Pending QST-KEY-STORAGE.* Fixed regardless of the answer: the key is entered at runtime, it is never in source, build, or git, it is sent only to openrouter.ai, and model output is rendered as text, not HTML.
+### Chosen: remember in localStorage, with a Forget key button (QST-KEY-STORAGE A)
+
+**Rationale**: This is a personal tool on Jana's own browser, so re-pasting the key each session adds friction without protecting against a real threat. A dedicated, credit-limited key bounds the worst case.
+
+**Trade-offs accepted**: The key persists on disk in the browser profile. If a script were ever injected into the page, it could read the key, which is why model output is rendered as text only.
+
+Fixed regardless of the answer: the key is entered at runtime, it is never in source, build, or git, it is sent only to openrouter.ai, and model output is rendered as text, not HTML.
 
 ---
 
@@ -85,6 +91,12 @@ Options:
 - Contributors: Jana Mourad, Claude Opus 5.5
 - Changes: framed the storage question; recorded the text-only-rendering constraint
 - Outcome: Draft
+
+### Iteration 2 (2026-11-19)
+- Trigger: Jana's answer via the Claude Code question dialog
+- Contributors: Jana Mourad, Claude Opus 5.5
+- Changes: QST-KEY-STORAGE → A; Decision filled
+- Outcome: `Draft → Accepted`
 
 ---
 
