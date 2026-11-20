@@ -98,7 +98,7 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 ## Questions
 
 ### QST-COACH-SCOPE: How should the DAT coach relate to the general-purpose study assistant?
-- Status: unanswered
+- Status: answered
 - Why asking: Earlier today (ADR-0008) you asked to remove all DAT references so the assistant would work for any subject. Now you want a full DAT curriculum and coach. Both can be satisfied, but in different ways. If the earlier removal was for privacy, note that this repo and website are **public**: anything built in shows that this tool is for the DAT.
 - Need: pick a letter (or override — any shape answers)
 
@@ -112,12 +112,12 @@ Options:
 **A — curriculum as data.** *Rationale*: A keeps ADR-0008's work (any subject still works) and gives the coach a clean structure (a curriculum tree), so custom topics are just nodes added to it. B throws away working features, and C adds an import step and a file you could lose, unless privacy is the concern. *Confidence*: 0.6 — because I don't know why you removed the DAT references earlier. *If wrong*: if that removal was about keeping your DAT plans out of a public repo, flip to C.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+A — curriculum as data. (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ### QST-DAT-SECTIONS: Which DAT tests should the curriculum and plan cover?
-- Status: unanswered
+- Status: answered
 - Why asking: You asked for the complete DAT curriculum. The official outline covers four tests (Explicitation 2). A text AI can teach and quiz the sciences and math well, and can write practice reading passages. It **cannot** reliably generate Perceptual Ability (PAT) puzzles, which are images (keyholes, cube stacks, folded paper). The answer decides what the plan schedules time for, and where it should send you elsewhere.
 - Need: pick a letter (or override — any shape answers)
 
@@ -131,7 +131,7 @@ Options:
 **A — all four, honest about PAT.** *Rationale*: A plan that leaves out three of the four tests isn't a plan for a high DAT score. It would tell you you're "on track" while PAT and Reading Comprehension go unscheduled. The PAT limitation is real, so the coach says so and sends you to dedicated practice instead of faking image puzzles in text. *Confidence*: 0.7 — because whether the coach should cover tests you'll prepare for elsewhere is your call. *If wrong*: if you're already using a separate PAT/RC program and want this tool focused, flip to C.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+A — all four, honest about PAT. (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 

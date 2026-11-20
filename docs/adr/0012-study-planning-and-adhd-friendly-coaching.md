@@ -42,7 +42,7 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 ## Questions
 
 ### QST-PLAN-ENGINE: How should the daily plan be decided?
-- Status: unanswered
+- Status: answered
 - Why asking: The plan has to weigh your exam date, what's due for review, your weak areas, what you haven't started, and the time you choose. That can be done by fixed rules inside the app or by asking the AI each day. The choice trades predictability against flexibility.
 - Need: pick a letter (or override — any shape answers)
 
@@ -56,12 +56,12 @@ Options:
 **A — rules in the app.** *Rationale*: For "tell me exactly what to do," predictability is the feature: the same state gives the same plan, and every task shows its reason, so the plan earns trust instead of feeling arbitrary. A is fully testable, including the missed-days behavior that must never produce guilt, and costs nothing per day. C's pep note can be added later without changing A. *Confidence*: 0.75 — because model-written encouragement might motivate you more than I expect. *If wrong*: if the Today screen feels mechanical after a week, flip to C.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+A — rules in the app. (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ### QST-HIGH-YIELD: What should "high-yield" mean when prioritizing topics?
-- Status: unanswered
+- Status: answered
 - Why asking: You asked to prioritize high-yield topics. The ADA publishes only how many questions each *section* has (Biology 40, General Chemistry 30, and so on), not which topics within a section appear most. Any finer ranking is an estimate from prep companies or student consensus, not official data.
 - Need: pick a letter (or override — any shape answers)
 
@@ -75,7 +75,7 @@ Options:
 **B — estimated weights, labeled.** *Rationale*: You explicitly asked for high-yield prioritization, which A can't deliver. B does it honestly: estimates are labeled as estimates, you can override them, and full coverage is guaranteed. Weak-area weighting (C's idea) applies under every option through ADR-0011's signals; this question is only about *yield*. *Confidence*: 0.55 — because the estimates would come from Claude's general knowledge of prep consensus, not a verified source. That makes this a judgment you're better placed to make or check. *If wrong*: if you'd rather nothing in the plan rest on unofficial numbers, flip to A.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+B — estimated weights, labeled. (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 

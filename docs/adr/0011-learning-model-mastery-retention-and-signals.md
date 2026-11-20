@@ -42,7 +42,7 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 ## Questions
 
 ### QST-MASTERY: When should a subtopic count as "mastered"?
-- Status: unanswered
+- Status: answered
 - Why asking: You asked to separate studying something from actually mastering it. "Mastered" should mean you can still answer correctly later, not just right after a lesson. A rule that's too strict never lets you feel progress; one that's too loose turns "mastered" into a word that means nothing.
 - Need: pick a letter (or override — any shape answers)
 
@@ -56,12 +56,12 @@ Options:
 **B — evidence + test out.** *Rationale*: "Distinguish exposure from demonstrated mastery" rules out C. A alone would make you re-earn mastery on material you already know from coursework, which is the slog that kills motivation. B's test-out is still demonstration, just faster. The later spaced review keeps a lucky test-out from sticking. *Confidence*: 0.75 — because the thresholds (4/5, 2 days) are reasonable defaults, not research-derived numbers. *If wrong*: if test-outs feel like a loophole you're tempted to abuse, flip to A.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+B — evidence + test out. (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ### QST-SRS: How should spaced reviews be scheduled?
-- Status: unanswered
+- Status: answered
 - Why asking: Spaced repetition means reviewing just before you'd forget, at intervals that grow when you remember and shrink when you don't. There are simple and sophisticated ways to schedule it, and the sophisticated ones are harder to understand and to trust.
 - Need: pick a letter (or override — any shape answers)
 
@@ -75,12 +75,12 @@ Options:
 **A — simple boxes (Leitner).** *Rationale*: FSRS's precision assumes the same card each time, but here every review is a new question (Explicitation 3), which weakens its main advantage. Leitner is transparent, and for motivation it matters that you can see *why* something is due. The exam-date squeeze in A gives C's countdown benefit without losing spacing. *Confidence*: 0.65 — because FSRS is genuinely better at scheduling exact flashcards, and you may prefer that. *If wrong*: if the review load feels badly paced after a few weeks, flip to B.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+A — simple boxes (Leitner). (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
 ### QST-LEARN-SIGNAL: How should Learn mode report what you understood?
-- Status: unanswered
+- Status: answered
 - Why asking: The tutor checks your understanding every turn (ADR-0009), but the app can't currently see the results. Tracking "concepts covered in Learn" and "concepts I struggle with" needs a signal. Your ADR-0007 answer ("c") chose quiz accuracy *and* self-rating as inputs.
 - Need: pick a letter (or override — any shape answers)
 
@@ -94,7 +94,7 @@ Options:
 **C — both.** *Rationale*: This matches your ADR-0007 answer: demonstrated understanding (the tutor grading your check answers) plus how you feel about it (your rating). The gap between the two is useful in its own right, and for a metacognition student it's the most interesting signal there is. The rating is one optional tap, so it doesn't add friction. *Confidence*: 0.7 — because A's reliability depends on the model, and I haven't measured it with a live key. *If wrong*: if the hidden notes turn out unreliable in practice, drop to B.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+C — both (tutor reports + self-rating). (Chosen via Claude Code question dialog, 2026-11-19.)
 
 ---
 
