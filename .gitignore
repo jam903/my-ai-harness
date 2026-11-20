@@ -12,6 +12,14 @@ dist/
 .env
 .env.*
 
+# Personal study history (ADR-0010): progress lives in browser localStorage; an export file
+# downloaded into this folder must never be committed to the public repo.
+study-progress-*.json
+
+# ADR Manager's local draft cache (keystroke history of in-progress answers + .bak files);
+# the answers themselves live in the ADRs.
+docs/adr/.working/
+
 # Python temporary files
 __pycache__/
 *.py[cod]
