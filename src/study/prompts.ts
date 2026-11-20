@@ -7,6 +7,8 @@ export interface StudyContext {
   subject: string;
   /** Free text, e.g. "Stereochemistry". Blank means the whole subject. */
   topic: string;
+  /** Set when studying a curriculum subtopic (ADR-0010); answers are tracked against it. */
+  subtopicId?: string;
 }
 
 const NOTATION =

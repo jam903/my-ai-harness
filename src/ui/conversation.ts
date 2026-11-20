@@ -1,19 +1,30 @@
 // A chat conversation panel, shared by the Learn tab (with the tutor prompt) and the Chat tab (without).
+// Supports resume (ADR-0010): the history can be restored and every change is reported.
 import { sendChat, type ChatMessage } from '../openrouter';
 import { renderMarkdown } from '../markdown';
 import { el } from './dom';
 
+export interface StoredMessage extends ChatMessage {
+  /** The model that answered (assistant messages only), shown as the bubble label. */
+  model?: string;
+}
+
 export interface ConversationDeps {
   getKey: () => string | null;
   getModel: () => string;
-  /** Read at send time, so a changed focus applies to the next message. */
+  /** Read at send time, so a changed scope applies to the next message. */
   getSystemPrompt?: () => string;
   placeholder: string;
   emptyHint: string;
+  /** Called after each successful reply; `first` is true for the conversation's first reply. */
+  onReply?: (first: boolean) => void;
+  /** Called whenever the stored history changes (for resume). */
+  onChange?: (history: StoredMessage[]) => void;
 }
 
 export interface Conversation {
   reset(notice?: string): void;
+  restore(history: StoredMessage[]): void;
 }
 
 export function mountConversation(root: HTMLElement, deps: ConversationDeps): Conversation {
@@ -33,7 +44,7 @@ export function mountConversation(root: HTMLElement, deps: ConversationDeps): Co
   form.append(input, buttons);
   root.append(messagesEl, form);
 
-  let history: ChatMessage[] = [];
+  let history: StoredMessage[] = [];
   let busy = false;
   let generation = 0; // bumps on reset so a late reply can't land in a new conversation
 
@@ -61,6 +72,18 @@ export function mountConversation(root: HTMLElement, deps: ConversationDeps): Co
     messagesEl.replaceChildren();
     setBusy(false);
     addBubble('hint', notice ?? deps.emptyHint);
+    deps.onChange?.(history);
+  }
+
+  function restore(saved: StoredMessage[]) {
+    generation++;
+    history = saved.filter((m) => m.role === 'user' || m.role === 'assistant');
+    messagesEl.replaceChildren();
+    setBusy(false);
+    if (!history.length) addBubble('hint', deps.emptyHint);
+    for (const m of history) addBubble(m.role === 'user' ? 'user' : 'assistant', m.content, m.role === 'user' ? 'You' : m.model);
+    // Mounting reports an empty history; re-save so a second reload doesn't lose the conversation.
+    deps.onChange?.(history);
   }
 
   async function send() {
@@ -74,6 +97,7 @@ export function mountConversation(root: HTMLElement, deps: ConversationDeps): Co
 
     messagesEl.querySelector('.msg-hint')?.remove();
     const mine = generation;
+    const first = !history.some((m) => m.role === 'assistant');
     history.push({ role: 'user', content: text });
     const userBubble = addBubble('user', text, 'You');
     input.value = '';
@@ -81,14 +105,17 @@ export function mountConversation(root: HTMLElement, deps: ConversationDeps): Co
     const pending = addBubble('pending', 'Thinking…');
 
     const system = deps.getSystemPrompt?.();
-    const messages: ChatMessage[] = system ? [{ role: 'system', content: system }, ...history] : history;
+    const turns: ChatMessage[] = history.map(({ role, content }) => ({ role, content }));
+    const messages: ChatMessage[] = system ? [{ role: 'system', content: system }, ...turns] : turns;
 
     try {
       const reply = await sendChat(key, deps.getModel(), messages);
       if (mine !== generation) return;
-      history.push({ role: 'assistant', content: reply.content });
+      history.push({ role: 'assistant', content: reply.content, model: reply.model });
       pending.remove();
       addBubble('assistant', reply.content, reply.model);
+      deps.onChange?.(history);
+      deps.onReply?.(first);
     } catch (err) {
       if (mine !== generation) return;
       // Roll back the failed turn so a retry doesn't send it twice; give the text back.
@@ -121,5 +148,5 @@ export function mountConversation(root: HTMLElement, deps: ConversationDeps): Co
   });
 
   reset();
-  return { reset };
+  return { reset, restore };
 }

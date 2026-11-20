@@ -93,6 +93,52 @@ button:disabled { opacity: 0.5; cursor: default; }
 .study-controls label, .model-label { display: flex; align-items: center; gap: 6px; font-size: 0.9rem; color: var(--muted); }
 .study-controls label { flex: 1 1 220px; }
 .study-controls input { flex: 1; min-width: 0; color: var(--fg); }
+.scope-free, .scope-line { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; flex: 1 1 100%; }
+.scope-line { font-size: 0.95rem; }
+
+/* Links, small buttons, status pills (ADR-0010) */
+button.link { background: none; border: none; padding: 2px 4px; color: var(--accent); font-size: 0.9rem; }
+button.small, .small { font-size: 0.8rem; padding: 3px 8px; }
+.muted { color: var(--muted); }
+.small-text { font-size: 0.8rem; }
+.pill { font-size: 0.75rem; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); white-space: nowrap; }
+.status-not-started { color: var(--muted); }
+.status-learning { background: var(--user); }
+.status-practicing { background: var(--surface); border-color: var(--accent); }
+.status-mastered { background: var(--right); border-color: var(--right-border); }
+.resume-note { margin: 8px 0 0; padding: 8px 12px; border-radius: 8px; background: var(--user); font-size: 0.9rem; }
+.celebrate { padding: 8px 12px; border-radius: 8px; background: var(--right); margin-bottom: 12px; }
+.testout-result { padding: 14px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); }
+
+/* Progress tab */
+.progress-panel { padding: 12px 0 32px; gap: 10px; }
+.progress-summary { display: flex; flex-direction: column; gap: 6px; padding-bottom: 8px; }
+.progress-title { font-weight: 600; font-size: 1.05rem; }
+.legend { font-size: 0.8rem; }
+.bar { position: relative; height: 6px; border-radius: 3px; background: var(--border); overflow: hidden; min-width: 80px; }
+.bar-started, .bar-mastered { position: absolute; inset: 0 auto 0 0; border-radius: 3px; }
+.bar-started { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+.bar-mastered { background: var(--accent); }
+details.subject, details.topic { border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
+details.topic { margin: 8px 12px; background: var(--bg); }
+details > summary { cursor: pointer; padding: 10px 12px; list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: '▸'; display: inline-block; width: 1em; color: var(--muted); }
+details[open] > summary::before { content: '▾'; }
+summary .row-head { display: inline-grid; grid-template-columns: 1fr auto; gap: 4px 12px; width: calc(100% - 1.2em); vertical-align: top; }
+.row-head .bar { grid-column: 1 / -1; }
+.row-title { font-weight: 500; }
+.subject-title { font-weight: 600; }
+.row-meta { font-size: 0.8rem; color: var(--muted); text-align: right; }
+.subject-note { margin: 0 12px 4px; font-size: 0.85rem; }
+.subtopic { display: grid; grid-template-columns: 1fr auto; gap: 6px 10px; align-items: center; padding: 8px 12px; border-top: 1px solid var(--border); }
+.subtopic-name { font-size: 0.92rem; }
+.subtopic-actions { grid-column: 1 / -1; display: flex; gap: 6px; flex-wrap: wrap; }
+.inline-add { padding: 6px 12px 10px; }
+.inline-add-form { display: flex; gap: 6px; flex-wrap: wrap; }
+.inline-add-form input { flex: 1; min-width: 160px; }
+.progress-footer { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding-top: 10px; }
+.button-like { border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; cursor: pointer; }
 .model-label { flex: 1 1 100%; }
 .model-label input { flex: 1; min-width: 0; color: var(--fg); }
 

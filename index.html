@@ -14,21 +14,32 @@
     <nav class="tabs" role="tablist" aria-label="Mode">
       <button type="button" role="tab" data-tab="learn" aria-controls="panel-learn">Learn</button>
       <button type="button" role="tab" data-tab="quiz" aria-controls="panel-quiz">Quiz</button>
+      <button type="button" role="tab" data-tab="progress" aria-controls="panel-progress">Progress</button>
       <button type="button" role="tab" data-tab="chat" aria-controls="panel-chat">Chat</button>
     </nav>
 
+    <p id="resume-note" class="resume-note" hidden></p>
+
     <section class="controls">
       <div id="study-controls" class="study-controls">
-        <label>
-          Subject
-          <input id="subject" list="subject-list" autocomplete="off" placeholder="e.g. Organic Chemistry, US History" />
-        </label>
-        <datalist id="subject-list"></datalist>
-        <label>
-          Topic
-          <input id="topic" list="topic-list" autocomplete="off" placeholder="Optional, e.g. Stereochemistry" />
-        </label>
-        <datalist id="topic-list"></datalist>
+        <div id="scope-curriculum" class="scope-line" hidden>
+          <span>Studying <strong id="scope-label"></strong></span>
+          <span id="scope-status" class="pill"></span>
+          <button id="scope-free" class="link" type="button">Switch to free study</button>
+        </div>
+        <div id="scope-freeform" class="scope-free">
+          <label>
+            Subject
+            <input id="subject" list="subject-list" autocomplete="off" placeholder="e.g. Organic Chemistry, US History" />
+          </label>
+          <datalist id="subject-list"></datalist>
+          <label>
+            Topic
+            <input id="topic" list="topic-list" autocomplete="off" placeholder="Optional, e.g. Stereochemistry" />
+          </label>
+          <datalist id="topic-list"></datalist>
+          <button id="scope-browse" class="link" type="button">or pick from the DAT syllabus</button>
+        </div>
       </div>
       <label class="model-label">
         Model
@@ -40,6 +51,7 @@
     <main class="panels">
       <section id="panel-learn" class="panel" role="tabpanel"></section>
       <section id="panel-quiz" class="panel" role="tabpanel" hidden></section>
+      <section id="panel-progress" class="panel progress-panel" role="tabpanel" hidden></section>
       <section id="panel-chat" class="panel" role="tabpanel" hidden></section>
     </main>
 
