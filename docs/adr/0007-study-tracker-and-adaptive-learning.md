@@ -47,7 +47,7 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 ## Questions
 
 ### QST-TRACKER-STORE: Where should your study history live?
-- Status: deferred — picked up after Learn and Quiz ship
+- Status: answered
 - Why asking: The tracker must survive closing the browser. The harness has no server. GitHub Pages serves only static files, as recorded in ADR-0001.
 - Need: pick a letter (or override — any shape answers)
 
@@ -60,12 +60,12 @@ Options:
 **A — this browser + export** (provisional; revisit when this ADR is picked up). *Rationale*: This matches ADR-0002's no-server, browser-only design and the "keep it simple" constraint. Export covers backups. *Confidence*: 0.6 — because it depends on whether you study on more than one device. *If wrong*: if you regularly switch between a laptop and a phone, flip to B.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+this browser
 
 ---
 
 ### QST-ADAPT-SIGNAL: What evidence should drive adaptive difficulty and explanation depth?
-- Status: deferred — picked up after Learn and Quiz ship
+- Status: answered
 - Why asking: "Based on my understanding" needs a measurable input before anything can adapt to it.
 - Need: pick a letter (or override — any shape answers)
 
@@ -79,7 +79,7 @@ Options:
 **C — both** (provisional). *Rationale*: The gap between how well you *think* you understand something and how you actually perform is exactly what a metacognition course studies, and only C measures it. *Confidence*: 0.6 — because it's the most complex option and is deferred anyway. *If wrong*: if self-ratings turn out to be noise, flip to A.
 
 **ANS:** (by Jana Mourad)
-[Fill this in]   <!-- literal placeholder — parser-significant, do not paraphrase -->
+c
 
 ---
 
