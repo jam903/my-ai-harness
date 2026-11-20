@@ -246,10 +246,10 @@ If the script was successfully used, append as comments how, and what the outcom
 ## Project Context
 
 ### What we're building:
-A general-purpose AI study assistant. Users type any subject and optional topic, then study in **Learn** mode (structured explanations) or **Quiz** mode (multiple-choice questions with every choice explained). A plain **Chat** tab is also available. It started as a minimal AI chat harness for Jana's Computationally Assisted Metacognition class. It is a static TypeScript page on GitHub Pages that talks to models through the OpenRouter API directly from the browser. Each user brings their own key, entered at runtime and never committed. Live at https://jam903.github.io/my-ai-harness/.
+A personal study coach, being built in phases (ADR-0010), centered on a built-in **DAT curriculum** (from the official ADA outline) and designed for an ADHD learner. You study a curriculum subtopic, or any free-text subject, in **Learn** mode (an interactive one-step-at-a-time tutor) or **Quiz** mode (multiple choice with every choice explained). The **Progress** tab tracks exposure vs. demonstrated mastery per subtopic. A plain **Chat** tab is also available. It started as a minimal AI chat harness for Jana's Computationally Assisted Metacognition class. It is a static TypeScript page on GitHub Pages that talks to models through the OpenRouter API directly from the browser. Each user brings their own key, entered at runtime and never committed. Live at https://jam903.github.io/my-ai-harness/.
 
 ### Current focus:
-Learn and Quiz work for any user-entered subject and topic (ADR-0008). Next: the study tracker and adaptive learning (ADR-0007, whose questions are deferred). ADRs 0004–0007 are kept as written; they record an earlier exam-specific design and are superseded in part by ADR-0008.
+The DAT coach. **Phase 1 is done**: curriculum, progress, test-out, custom topics, export/import, and resume. **Next is Phase 2, retention** (ADR-0011): Leitner reviews, the mistake bank, Learn progress notes plus self-rating, and adaptive difficulty. After that comes Phase 3, coaching (ADR-0012: Today screen, plan engine, sessions, low-motivation mode), then Phase 4, insights. ADRs 0004–0007 record an earlier exam-specific design and are kept as history.
 
 ### Key decisions made:
 - Stack, deploy, gate (Vite + GitHub Actions → Pages; `npm run check`) — see `docs/adr/0001-stack-build-and-deployment-to-github-pages.md`
@@ -259,6 +259,9 @@ Learn and Quiz work for any user-entered subject and topic (ADR-0008). Next: the
 - Learn mode: interactive tutor that teaches one idea per reply, ends with one check question, and waits; it explains differently when you're confused, and draws text diagrams in code blocks (supersedes ADR-0005's five-section template) — see `docs/adr/0009-learn-mode-as-an-interactive-tutor.md`
 - Quiz mode: structured JSON with the solution before the answer, 5 clickable choices, every choice explained after every answer — see `docs/adr/0006-quiz-mode-question-format-and-feedback.md`
 - Free-text subject and topic with your previous entries suggested; code in `src/study/` — see `docs/adr/0008-general-purpose-study-assistant.md`
+- DAT coach: the curriculum is data (`src/curriculum/`), covering all four tests (PAT practised externally); built in phases — see `docs/adr/0010-dat-study-coach-scope-curriculum-and-phases.md`
+- Mastery = 4 of the last 5 correct on 2+ days, or a passed test-out; Leitner reviews; Learn reports via tutor notes plus self-rating; status is computed from evidence, never stored (`src/progress/`) — see `docs/adr/0011-learning-model-mastery-retention-and-signals.md`
+- Plan by in-app rules; high-yield weights are labeled estimates, with every subtopic still covered; no streaks, no guilt for missed days — see `docs/adr/0012-study-planning-and-adhd-friendly-coaching.md`
 - Tracker and adaptivity deferred; quiz answers are already logged to localStorage as `quiz-results` — see `docs/adr/0007-study-tracker-and-adaptive-learning.md`
 
 ### Commands:
