@@ -9,8 +9,8 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 # Learning model: mastery, retention, and signals
 
 - **Date**: 2026-11-19
-- **Iteration**: 1
-- **Status**: Draft
+- **Iteration**: 2
+- **Status**: Partially Implemented
 - **Deciders**: Jana Mourad, Claude (Opus 5.5)
 
 **TL;DR**: Each subtopic carries a status computed from evidence, separating **exposure** (you studied it) from **demonstrated mastery** (you answered correctly over time). Spaced reviews re-test with fresh AI questions, and missed concepts are re-tested with *different* questions. Open: the mastery rule, the review schedule, and how Learn reports understanding.
@@ -100,7 +100,17 @@ C — both (tutor reports + self-rating). (Chosen via Claude Code question dialo
 
 ## Decision
 
-*Pending QST-MASTERY, QST-SRS, and QST-LEARN-SIGNAL.* Decided under the agency grant:
+### Chosen by Jana: QST-MASTERY B (evidence + test-out), QST-SRS A (Leitner boxes), QST-LEARN-SIGNAL C (tutor reports + self-rating)
+
+**Built in Phase 1** (`src/progress/model.ts`, `store.ts`):
+- A Learn conversation's first reply on a subtopic counts as one **exposure**.
+- Each quiz answer is stored as **evidence**, with a timestamp and whether it was a quiz or test-out answer.
+- **Mastered** = ≥4 of the last 5 answers correct, with correct answers on ≥2 different calendar days, **or** the latest test-out scored ≥4/5. **Test me** runs 5 questions.
+- Free-study quiz answers still go to the ADR-0007/0008 `quiz-results` log, since they have no subtopic.
+
+**Phase 2** adds the Leitner schedule (boxes at 1/3/7/14/30 days, squeezed toward the exam date), the "latest spaced review correct" condition on mastery (which also confirms test-outs), the mistake bank, Learn's hidden progress notes plus the end-of-session rating, and adaptive difficulty. Jana's ADR-0007 answers (in her working tree) are consistent with all of this.
+
+Also decided under the agency grant:
 - The subtopic is the unit of tracking.
 - Status is **computed** from stored evidence (Learn sessions, quiz attempts with timestamps), never stored directly, so changing a rule never corrupts old data.
 - Labels are neutral (Explicitation 5).
@@ -110,7 +120,7 @@ C — both (tutor reports + self-rating). (Chosen via Claude Code question dialo
 
 ## Action Items
 
-- [ ] Phase 1: evidence storage and status computation — Owner: Claude
+- [x] Phase 1: evidence storage and status computation — Owner: Claude (2026-11-19)
 - [ ] Phase 2: review scheduler, mistake bank, Learn signal, adaptive difficulty — Owner: Claude
 
 ---
@@ -122,6 +132,12 @@ C — both (tutor reports + self-rating). (Chosen via Claude Code question dialo
 - Contributors: Jana Mourad, Claude Opus 5.5
 - Changes: framed the mastery, scheduling, and Learn-signal questions
 - Outcome: Draft
+
+### Iteration 2 (2026-11-19)
+- Trigger: Jana's answers (all as recommended); Phase 1 implementation
+- Contributors: Jana Mourad, Claude Opus 5.5
+- Changes: Decision filled; status model and test-out built
+- Outcome: `Draft → Partially Implemented`
 
 ---
 

@@ -9,8 +9,8 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 # DAT study coach: scope, curriculum, and phases
 
 - **Date**: 2026-11-19
-- **Iteration**: 1
-- **Status**: Draft
+- **Iteration**: 2
+- **Status**: Partially Implemented
 - **Deciders**: Jana Mourad, Claude (Opus 5.5)
 
 **TL;DR**: Expand the study assistant into a personal DAT study coach for an ADHD learner, built on the official ADA content outline, in four phases: (1) curriculum, progress, and resume; (2) retention; (3) daily coaching and planning; (4) insights. Open: how this relates to the general-purpose assistant (ADR-0008), and which DAT tests the curriculum covers.
@@ -150,7 +150,24 @@ A — all four, honest about PAT. (Chosen via Claude Code question dialog, 2026-
 3. **Phase 3 — Coach** (ADR-0012): exam date, a **Today** screen ("do this next"), 5/10/15/25-minute sessions, a low-motivation mode, rebalancing missed days without guilt, and celebrations without streaks.
 4. **Phase 4 — Insights**: performance trends, upcoming reviews, and a weak-areas view.
 
-*QST-COACH-SCOPE and QST-DAT-SECTIONS pending.*
+### Chosen by Jana: QST-COACH-SCOPE A (curriculum as data), QST-DAT-SECTIONS A (all four tests, honest about PAT)
+
+**Phase 1, as built (2026-11-19):**
+- **Curriculum**: `src/curriculum/dat.ts`, transcribed from Figures 1–4.
+  - Each subject records its exam item count and a `practice` mode:
+    - `ai` for Biology, General Chemistry, Organic Chemistry, and Quantitative Reasoning;
+    - `external` for PAT: Learn teaches strategy, and Quiz is disabled with an explanation;
+    - `passage` for Reading Comprehension: Learn works now, and AI passages come later.
+  - Fourth-level official items are folded into subtopic titles or details.
+  - The PAT and Reading Comprehension topics are labelled as *not* official content figures.
+  - Custom topics and subtopics live in the progress data (`withCustom` never mutates the built-in tree). A new custom topic is created with one subtopic of the same name, so it can be studied right away.
+- **Scope**: you study a **curriculum subtopic** (chosen from Progress) or use **free study**, which is the ADR-0008 free-text fields, still available. Prompts receive the subject as e.g. "DAT General Chemistry", so the tutor and quiz know the exam level.
+- **Progress tab**: a collapsible tree showing coverage (started) vs. mastery bars per subject and topic, plus a status pill and Learn / Quiz / **Test me** buttons per subtopic, with add/remove for custom items. It ends with **Export / Import**.
+- **Resume**: the tab, scope, Learn conversation, Chat conversation, and open quiz question (answered or not) survive a reload (`src/session/resume.ts`), with a "Welcome back" note. A fresh visit opens on Progress.
+- **Celebration**: a one-line 🎉 when a subtopic becomes mastered or a test-out passes. A failed test-out is framed as useful information, never as failure.
+- **Tests**: the gate has 55 tests. They pin the official structure (including regression tests for the ADR-0004 list's errors), the mastery rules, that exports exclude the key, import validation, and resume across a reload.
+
+**Phases 2–4 remain** (Action Items).
 
 ---
 
@@ -162,7 +179,7 @@ A — all four, honest about PAT. (Chosen via Claude Code question dialog, 2026-
 
 ## Action Items
 
-- [ ] Phase 1 — Owner: Claude
+- [x] Phase 1 — Owner: Claude (2026-11-19)
 - [ ] Phases 2–4, each after Jana has used the previous phase — Owner: Claude, prioritized by Jana
 
 ---
@@ -174,6 +191,12 @@ A — all four, honest about PAT. (Chosen via Claude Code question dialog, 2026-
 - Contributors: Jana Mourad, Claude Opus 5.5
 - Changes: official outline extracted; phases laid out; scope and test-coverage questions opened
 - Outcome: Draft
+
+### Iteration 2 (2026-11-19)
+- Trigger: Jana's answers (all as recommended) via the Claude Code question dialog; Phase 1 implementation
+- Contributors: Jana Mourad, Claude Opus 5.5
+- Changes: Decision filled; Phase 1 built, tested (55), and deployed
+- Outcome: `Draft → Partially Implemented`
 
 ---
 

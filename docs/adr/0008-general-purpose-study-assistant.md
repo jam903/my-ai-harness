@@ -15,6 +15,8 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 
 **TL;DR**: The study assistant is no longer tied to one exam. Users type their own subject and optional topic, Learn and Quiz work for any subject, and exam-specific presets, wording, and `src/dat` are gone (now `src/study`). ADRs 0004–0007 are kept as history with superseded notes, and quizzes keep five choices.
 
+> **Superseded in part by [ADR-0010](0010-dat-study-coach-scope-curriculum-and-phases.md) (2026-11-19):** at Jana's request, the DAT returns as a **built-in curriculum** (`src/curriculum/dat.ts`, from the official ADA outline), shown on screen when you study from it. Free study for any subject, which is this ADR's core, is kept unchanged.
+
 ---
 
 ## Originating Context

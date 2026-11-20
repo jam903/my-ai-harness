@@ -9,8 +9,8 @@ adr teaching map: the example is not the teaching — these are the up-links fro
 # Study planning and ADHD-friendly coaching
 
 - **Date**: 2026-11-19
-- **Iteration**: 1
-- **Status**: Draft
+- **Iteration**: 2
+- **Status**: Accepted
 - **Deciders**: Jana Mourad, Claude (Opus 5.5)
 
 **TL;DR**: Phase 3 adds a **Today** screen that says exactly what to do next, built from your exam date, progress, due reviews, and weak areas. It offers 5/10/15/25-minute sessions and a low-motivation "one small thing" mode, absorbs missed days without guilt or backlog, and celebrates milestones rather than streaks. Open: how the plan is computed, and what counts as "high-yield."
@@ -81,7 +81,9 @@ B — estimated weights, labeled. (Chosen via Claude Code question dialog, 2026-
 
 ## Decision
 
-*Pending QST-PLAN-ENGINE and QST-HIGH-YIELD.* Decided under the agency grant (to be built in Phase 3):
+### Chosen by Jana: QST-PLAN-ENGINE A (rules in the app), QST-HIGH-YIELD B (estimated weights, labeled, adjustable, with full coverage guaranteed)
+
+Phase 1 delivered only "resume exactly where you left off" (ADR-0010). The rest is Phase 3. Decided under the agency grant (to be built in Phase 3):
 - The **Today** screen is the landing tab. It shows one primary task with its reason, plus "something smaller" and "something else" links.
 - Session lengths: **5, 10, 15, 25 minutes**, with a gentle timer that suggests stopping rather than forcing it.
 - **Low-motivation mode** ("Just one small thing"): one task of 2–5 minutes, usually a single review question or one Learn step. Finishing it counts and says so, with no "keep going?" pressure.
@@ -91,7 +93,7 @@ B — estimated weights, labeled. (Chosen via Claude Code question dialog, 2026-
 
 ## Action Items
 
-- [ ] Phase 1: a minimal "Continue where you left off" — Owner: Claude
+- [x] Phase 1: a minimal "Continue where you left off" — Owner: Claude (2026-11-19, as full resume)
 - [ ] Phase 3: exam date, plan engine, Today screen, sessions, low-motivation mode, celebrations — Owner: Claude
 
 ---
@@ -103,6 +105,12 @@ B — estimated weights, labeled. (Chosen via Claude Code question dialog, 2026-
 - Contributors: Jana Mourad, Claude Opus 5.5
 - Changes: framed the plan-engine and high-yield questions; recorded the ADHD-friendly design decisions
 - Outcome: Draft
+
+### Iteration 2 (2026-11-19)
+- Trigger: Jana's answers (all as recommended)
+- Contributors: Jana Mourad, Claude Opus 5.5
+- Changes: Decision filled
+- Outcome: `Draft → Accepted`
 
 ---
 
